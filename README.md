@@ -1,3 +1,4 @@
+
 # Docker Compose - React, Laravel, MySQL, PhpMyAdmin, Node.js
 
 Just a basic boilerplate to start directly coding on React, Node.js, Laravel, MySQL and PhpMyAdmin with Docker Compose.
@@ -29,11 +30,11 @@ MySQL Version: 8.0.x
 
 Clone the repository:
 
-`git clone https://github.com/your-username/your-repo.git`
+`git clone https://github.com/your-username/react-laravel-node-docker.git`
 
 Navigate to the project directory:
 
-`cd your-repo`
+`cd react-laravel-node-docker`
 
 Build and run the containers:
 
@@ -63,3 +64,4 @@ You may encounter issues while running the project on Windows, you can follow th
 - Open File Explorer and go to Linux, Ubuntu-20.04, home, your username and put your code inside it then open it using VS code.
 - In VS Code, open Ubuntu-20.04 (WSL) terminal and run the following commands to build and run docker composer.
   `docker-compose up --build`
+
