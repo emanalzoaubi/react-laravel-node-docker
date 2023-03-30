@@ -1,0 +1,92 @@
+version: "3.7"
+
+services:
+  frontend:
+    build:
+      context: ./app-react
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app-react/src:/app/src
+
+    networks:
+      - app-network
+
+  stroybook:
+    build:
+      context: ./app-react
+      dockerfile: Dockerfile.storybook
+    ports:
+      - "6006:6006"
+    networks:
+      - app-network
+    volumes:
+      - ./app-react/.storybook:/app/.storybook
+
+  backend:
+    build:
+      context: ./app-laravel/
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./app-laravel:/app
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+      - db
+    depends_on:
+      - appdb
+
+  node:
+    build:
+      context: ./app-node
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    networks:
+      - app-network
+    volumes:
+      - ./app-node/src:/app/src
+
+  appdb:
+    image: mysql:8
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ALLOW_EMPTY_PASSWORD: "true"
+    volumes:
+      - appdb:/var/lib/mysql
+      - initdb:/docker-entrypoint-initdb.d
+    ports:
+      - 3306:3306
+    networks:
+      - db
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: appdb
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - 8443:80
+    networks:
+      - db
+    depends_on:
+      - appdb
+
+networks:
+  app-network:
+    driver: bridge
+  db:
+
+volumes:
+  appdb:
+    driver: local
+  initdb:
