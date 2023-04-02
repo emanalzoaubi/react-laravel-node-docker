@@ -87,6 +87,9 @@ networks:
   db:
 
 volumes:
+  app-laravel:
+  app-react:
+  app-node:
   appdb:
     driver: local
   initdb:
