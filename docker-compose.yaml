@@ -29,13 +29,6 @@ services:
       context: ./app-laravel/
       dockerfile: Dockerfile
     restart: unless-stopped
-    environment:
-      DB_CONNECTION: mysql
-      DB_HOST: appdb
-      DB_PORT: 3306
-      DB_DATABASE: ${DB_DATABASE}
-      DB_USERNAME: ${DB_USERNAME}
-      MYSQL_ALLOW_EMPTY_PASSWORD: "YES"
     volumes:
       - ./app-laravel:/app
     ports:
@@ -45,6 +38,8 @@ services:
       - db
     depends_on:
       - appdb
+    env_file:
+      - ./app-laravel/laravel-app.env
 
   node:
     build:
